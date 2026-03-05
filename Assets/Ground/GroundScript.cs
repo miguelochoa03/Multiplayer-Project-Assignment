@@ -10,9 +10,9 @@ public class GroundScript : MonoBehaviour
     void Update()
     {
         // Makes sure rotation moves back to its original
-        while (transform.eulerAngles != savedRotation)
-        {
-            //if (transform.eulerAngles.y == 
-        }
-    }
+        //while (transform.eulerAngles != savedRotation)
+        //{
+        //    //Add every second cooldown
+        //}
+}
 }
