@@ -7,6 +7,10 @@ public class Player : MonoBehaviour
 
     public float moveSpeed = 5f;
 
+    public float rotationSpeed = 100f;
+
+    float rotateInput = 0f;
+
     float xInput;
     float yInput;
 
@@ -26,20 +30,40 @@ public class Player : MonoBehaviour
 
     void GetMovementInputs()
     {
+        // For wasd
         xInput = Input.GetAxis("Horizontal");
         yInput = Input.GetAxis("Vertical");
 
+        // For jumping
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-            rb.AddForce(Vector3.up * 300);
+            rb.AddForce(Vector3.up * 500);
         }
 
-        // Add rotation if I have time and everything is done.
+        // For Q and E rotate inputs
+        if (Input.GetKey(KeyCode.Q))
+        {
+            rotateInput = -1f;
+        } else if (Input.GetKey(KeyCode.E))
+        {
+            rotateInput = 1f;
+        } else
+        {
+            rotateInput = 0f;
+        }
     }
 
     private void FixedUpdate()
     {
+        // Movement
         rb.AddForce(xInput * moveSpeed, 0, yInput * moveSpeed);
+
+        // Rotation
+        if (rotateInput != 0f)
+        {
+            Quaternion delta = Quaternion.Euler(0f, rotateInput * rotationSpeed * Time.fixedDeltaTime, 0f);
+            rb.MoveRotation(rb.rotation * delta);
+        }
     }
     void OnCollisionEnter(Collision collision)
     {

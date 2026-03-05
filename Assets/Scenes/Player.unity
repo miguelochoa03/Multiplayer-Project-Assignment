@@ -349,7 +349,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 460152792}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &460152796
 Transform:
   m_ObjectHideFlags: 0
@@ -407,6 +407,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isGrounded: 0
   moveSpeed: 10
+  rotationSpeed: 100
 --- !u!1 &1212433859
 GameObject:
   m_ObjectHideFlags: 0
@@ -789,7 +790,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52a17ec6fea5ee94cbdd958045a4ebda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ground: {fileID: 1287241949}
   spawns:
   - {fileID: 1287241949}
   - {fileID: 2138058264}
@@ -1250,6 +1250,7 @@ GameObject:
   - component: {fileID: 1834115464}
   - component: {fileID: 1834115463}
   - component: {fileID: 1834115462}
+  - component: {fileID: 1834115467}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
@@ -1373,6 +1374,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1834115467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1834115461}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44842fc9e3b3e2546bbc080f6a3a5039, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  returnSpeed: 5
 --- !u!1 &2138058264
 GameObject:
   m_ObjectHideFlags: 0

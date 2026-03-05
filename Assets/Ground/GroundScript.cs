@@ -2,17 +2,47 @@ using UnityEngine;
 
 public class GroundScript : MonoBehaviour
 {
-    Vector3 savedRotation;
+
+    Rigidbody rb;
+    Quaternion originalRot;
+
+    public float returnSpeed = 5f;
+
+    bool isColliding = false;
+
     void Start()
     {
-        savedRotation = transform.eulerAngles;
+        rb = GetComponent<Rigidbody>();
+        originalRot = transform.rotation;
     }
-    void Update()
+
+    void FixedUpdate()
     {
-        // Makes sure rotation moves back to its original
-        //while (transform.eulerAngles != savedRotation)
-        //{
-        //    //Add every second cooldown
-        //}
-}
+        // when not colliding, rotate back to its original rotation
+        if (!isColliding)
+        {
+            Quaternion newRot = Quaternion.Slerp(
+                rb.rotation,
+                originalRot,
+                returnSpeed * Time.fixedDeltaTime
+            );
+
+            rb.MoveRotation(newRot);
+        }
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        isColliding = true;
+    }
+
+    void OnCollisionStay(Collision collision)
+    {
+        isColliding = true;
+    }
+
+    void OnCollisionExit(Collision collision)
+    {
+        isColliding = false;
+    }
 }
