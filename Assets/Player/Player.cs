@@ -1,10 +1,11 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
     public bool isGrounded = false;
 
-    public float moveSpeed = 10f;
+    public float moveSpeed = 5f;
 
     float xInput;
     float yInput;
@@ -30,7 +31,7 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
-            rb.AddForce(Vector3.up * 500);
+            rb.AddForce(Vector3.up * 300);
         }
     }
 
@@ -38,7 +39,6 @@ public class Player : MonoBehaviour
     {
         rb.AddForce(xInput * moveSpeed, 0, yInput * moveSpeed);
     }
-
     void OnCollisionEnter(Collision collision)
     {
         // When it collides with the ground, sets the variable isGrounded to true
