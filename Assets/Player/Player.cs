@@ -33,6 +33,8 @@ public class Player : MonoBehaviour
         {
             rb.AddForce(Vector3.up * 300);
         }
+
+        // Add rotation if I have time and everything is done.
     }
 
     private void FixedUpdate()
