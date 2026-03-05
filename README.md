@@ -1,4 +1,1 @@
-# Multiplayer-Project-Assignment
-# Multiplayer-Project-Assignment
-# Multiplayer-Project-Assignment
-# Multiplayer-Project-Assignment
+# CS596 - Multiplayer Project Assignment
