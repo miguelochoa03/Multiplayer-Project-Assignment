@@ -16,18 +16,15 @@ public class Player : MonoBehaviour
 
     Rigidbody rb;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = GetComponent<Rigidbody>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         GetMovementInputs();
     }
-
     void GetMovementInputs()
     {
         // For wasd
@@ -52,25 +49,11 @@ public class Player : MonoBehaviour
             rotateInput = 0f;
         }
     }
-
-    //private void FixedUpdate()
-    //{
-    //    // Movement
-    //    rb.AddForce(xInput * moveSpeed, 0, yInput * moveSpeed);
-
-    //    // Rotation
-    //    if (rotateInput != 0f)
-    //    {
-    //        Quaternion delta = Quaternion.Euler(0f, rotateInput * rotationSpeed * Time.fixedDeltaTime, 0f);
-    //        rb.MoveRotation(rb.rotation * delta);
-    //    }
-    //}
     private void FixedUpdate()
     {
-        // --- CAMERA-RELATIVE MOVEMENT ---
+        // camera relative movement
         Transform cam = Camera.main.transform;
 
-        // Flatten camera forward/right so movement stays on the ground
         Vector3 camForward = cam.forward;
         camForward.y = 0;
         camForward.Normalize();
@@ -79,19 +62,18 @@ public class Player : MonoBehaviour
         camRight.y = 0;
         camRight.Normalize();
 
-        // Build movement direction based on WASD + camera orientation
+        // move based on direction
         Vector3 moveDir = camRight * xInput + camForward * yInput;
 
         rb.AddForce(moveDir * moveSpeed);
 
-        // --- ROTATION (Q/E) ---
+        // when pressing Q or E
         if (rotateInput != 0f)
         {
             Quaternion delta = Quaternion.Euler(0f, rotateInput * rotationSpeed * Time.fixedDeltaTime, 0f);
             rb.MoveRotation(rb.rotation * delta);
         }
     }
-
     void OnCollisionEnter(Collision collision)
     {
         // When it collides with the ground, sets the variable isGrounded to true
