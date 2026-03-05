@@ -53,18 +53,45 @@ public class Player : MonoBehaviour
         }
     }
 
+    //private void FixedUpdate()
+    //{
+    //    // Movement
+    //    rb.AddForce(xInput * moveSpeed, 0, yInput * moveSpeed);
+
+    //    // Rotation
+    //    if (rotateInput != 0f)
+    //    {
+    //        Quaternion delta = Quaternion.Euler(0f, rotateInput * rotationSpeed * Time.fixedDeltaTime, 0f);
+    //        rb.MoveRotation(rb.rotation * delta);
+    //    }
+    //}
     private void FixedUpdate()
     {
-        // Movement
-        rb.AddForce(xInput * moveSpeed, 0, yInput * moveSpeed);
+        // --- CAMERA-RELATIVE MOVEMENT ---
+        Transform cam = Camera.main.transform;
 
-        // Rotation
+        // Flatten camera forward/right so movement stays on the ground
+        Vector3 camForward = cam.forward;
+        camForward.y = 0;
+        camForward.Normalize();
+
+        Vector3 camRight = cam.right;
+        camRight.y = 0;
+        camRight.Normalize();
+
+        // Build movement direction based on WASD + camera orientation
+        Vector3 moveDir = camRight * xInput + camForward * yInput;
+
+        rb.AddForce(moveDir * moveSpeed);
+
+        // --- ROTATION (Q/E) ---
         if (rotateInput != 0f)
         {
             Quaternion delta = Quaternion.Euler(0f, rotateInput * rotationSpeed * Time.fixedDeltaTime, 0f);
             rb.MoveRotation(rb.rotation * delta);
         }
     }
+
     void OnCollisionEnter(Collision collision)
     {
         // When it collides with the ground, sets the variable isGrounded to true
