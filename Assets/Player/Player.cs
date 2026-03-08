@@ -14,10 +14,9 @@ public class Player : NetworkBehaviour
             var cam = Instantiate(playerCam);
             cam.Follow = transform;
             cam.LookAt = transform;
+            rb = GetComponent<Rigidbody>();
         }
     }
-
-
 
     public bool isGrounded = false;
 
@@ -27,17 +26,14 @@ public class Player : NetworkBehaviour
 
     float rotateInput = 0f;
 
+    public float knockback = 880f;
+
     bool jumpPressed;
 
     float xInput;
     float yInput;
 
     Rigidbody rb;
-
-    void Start()
-    {
-        rb = GetComponent<Rigidbody>();
-    }
 
     void Update()
     {
@@ -48,9 +44,7 @@ public class Player : NetworkBehaviour
 
         GetMovementInputs();
     }
-
-    [ServerRpc]
-    void MovementServerRpc(Vector3 moveDir, float rotateInput, bool jump)
+    void Movement(Vector3 moveDir, float rotateInput, bool jump)
     {
         // Movement
         rb.AddForce(moveDir * moveSpeed);
@@ -69,24 +63,11 @@ public class Player : NetworkBehaviour
         }
     }
 
-
-
-
-
-
     void GetMovementInputs()
     {
         // For wasd
         xInput = Input.GetAxis("Horizontal");
         yInput = Input.GetAxis("Vertical");
-
-        // For jumping
-        //if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        //{
-        //    rb.AddForce(Vector3.up * 500);
-        //}
-        if (Input.GetKeyDown(KeyCode.Space))
-            jumpPressed = true;
 
         // For Q and E rotate inputs
         if (Input.GetKey(KeyCode.Q))
@@ -118,34 +99,20 @@ public class Player : NetworkBehaviour
         // move based on direction
         Vector3 moveDir = camRight * xInput + camForward * yInput;
 
-        //rb.AddForce(moveDir * moveSpeed);
-
-        // when pressing Q or E
-        //if (rotateInput != 0f)
-        //{
-        //    Quaternion delta = Quaternion.Euler(0f, rotateInput * rotationSpeed * Time.fixedDeltaTime, 0f);
-        //    rb.MoveRotation(rb.rotation * delta);
-        //}
-
-
-        MovementServerRpc(moveDir, rotateInput, jumpPressed);
+        Movement(moveDir, rotateInput, jumpPressed);
 
         jumpPressed = false;
     }
     void OnCollisionEnter(Collision collision)
     {
-        if (!IsServer) return;
-        // When it collides with the ground, sets the variable isGrounded to true
-        if (collision.gameObject.name == "Ground")
+        if (collision.gameObject.CompareTag("Jumpable"))
         {
             isGrounded = true;
         }
     }
     void OnCollisionExit(Collision collision)
     {
-        if (!IsServer) return;
-        // When it stops colliding with the ground, sets the variable isGrounded to false
-        if (collision.gameObject.name == "Ground")
+        if (collision.gameObject.CompareTag("Jumpable"))
         {
             isGrounded = false;
         }

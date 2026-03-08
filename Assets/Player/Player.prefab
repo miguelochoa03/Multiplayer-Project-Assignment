@@ -15,10 +15,10 @@ GameObject:
   - component: {fileID: 8514171602389724977}
   - component: {fileID: -6348392172505718736}
   - component: {fileID: 3431840270209690671}
-  - component: {fileID: -216205190129556495}
+  - component: {fileID: -8454039948406061706}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -181,7 +181,8 @@ MonoBehaviour:
   isGrounded: 0
   moveSpeed: 10
   rotationSpeed: 100
---- !u!114 &-216205190129556495
+  knockback: 880
+--- !u!114 &-8454039948406061706
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -190,11 +191,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4930085129693978903}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Script: {fileID: 11500000, guid: e0e474431479fba4bb65b338b33ec694, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  NetworkTransformExpanded: 0
+  NetworkTransformExpanded: 1
   AutoOwnerAuthorityTickOffset: 1
   PositionInterpolationType: 0
   RotationInterpolationType: 0
@@ -205,7 +206,7 @@ MonoBehaviour:
   RotationMaxInterpolationTime: 0.1
   ScaleLerpSmoothing: 1
   ScaleMaxInterpolationTime: 0.1
-  AuthorityMode: 0
+  AuthorityMode: 1
   TickSyncChildren: 0
   UseUnreliableDeltas: 0
   SyncPositionX: 1
