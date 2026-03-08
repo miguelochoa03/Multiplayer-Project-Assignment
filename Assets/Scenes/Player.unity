@@ -974,8 +974,8 @@ GameObject:
   - component: {fileID: 1266971458}
   - component: {fileID: 1266971457}
   - component: {fileID: 1266971456}
-  - component: {fileID: 1266971461}
   - component: {fileID: 1266971462}
+  - component: {fileID: 1266971461}
   m_Layer: 0
   m_Name: LoseBarrier
   m_TagString: Untagged
@@ -1094,7 +1094,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -10.03, z: 0}
-  m_LocalScale: {x: 150, y: 0.5, z: 150}
+  m_LocalScale: {x: 4884.7085, y: 0.5, z: 3678.4502}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1111,6 +1111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52a17ec6fea5ee94cbdd958045a4ebda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
 --- !u!114 &1266971462
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1166,6 +1167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a236bf487daf3144bfb61dec05647cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ShowTopMostFoldoutHeaderGroup: 1
   winnerText: {fileID: 214600771}
 --- !u!4 &1283825498
 Transform:
