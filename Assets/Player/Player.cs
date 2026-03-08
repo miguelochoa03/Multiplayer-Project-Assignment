@@ -1,8 +1,24 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Unity.Netcode;
+using Unity.Cinemachine;
 
-public class Player : MonoBehaviour
+public class Player : NetworkBehaviour
 {
+    public CinemachineCamera playerCam;
+
+    public override void OnNetworkSpawn()
+    {
+        if (IsOwner)
+        {
+            var cam = Instantiate(playerCam);
+            cam.Follow = transform;
+            cam.LookAt = transform;
+        }
+    }
+
+
+
     public bool isGrounded = false;
 
     public float moveSpeed = 5f;
@@ -10,6 +26,8 @@ public class Player : MonoBehaviour
     public float rotationSpeed = 100f;
 
     float rotateInput = 0f;
+
+    bool jumpPressed;
 
     float xInput;
     float yInput;
@@ -23,8 +41,39 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        if (!IsOwner) return;
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            jumpPressed = true;
+
         GetMovementInputs();
     }
+
+    [ServerRpc]
+    void MovementServerRpc(Vector3 moveDir, float rotateInput, bool jump)
+    {
+        // Movement
+        rb.AddForce(moveDir * moveSpeed);
+
+        // Rotation
+        if (rotateInput != 0f)
+        {
+            Quaternion delta = Quaternion.Euler(0f, rotateInput * rotationSpeed * Time.fixedDeltaTime, 0f);
+            rb.MoveRotation(rb.rotation * delta);
+        }
+
+        // Jump
+        if (jump && isGrounded)
+        {
+            rb.AddForce(Vector3.up * 500);
+        }
+    }
+
+
+
+
+
+
     void GetMovementInputs()
     {
         // For wasd
@@ -32,10 +81,12 @@ public class Player : MonoBehaviour
         yInput = Input.GetAxis("Vertical");
 
         // For jumping
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        {
-            rb.AddForce(Vector3.up * 500);
-        }
+        //if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        //{
+        //    rb.AddForce(Vector3.up * 500);
+        //}
+        if (Input.GetKeyDown(KeyCode.Space))
+            jumpPressed = true;
 
         // For Q and E rotate inputs
         if (Input.GetKey(KeyCode.Q))
@@ -51,6 +102,8 @@ public class Player : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (!IsOwner) return;
+
         // camera relative movement
         Transform cam = Camera.main.transform;
 
@@ -65,17 +118,23 @@ public class Player : MonoBehaviour
         // move based on direction
         Vector3 moveDir = camRight * xInput + camForward * yInput;
 
-        rb.AddForce(moveDir * moveSpeed);
+        //rb.AddForce(moveDir * moveSpeed);
 
         // when pressing Q or E
-        if (rotateInput != 0f)
-        {
-            Quaternion delta = Quaternion.Euler(0f, rotateInput * rotationSpeed * Time.fixedDeltaTime, 0f);
-            rb.MoveRotation(rb.rotation * delta);
-        }
+        //if (rotateInput != 0f)
+        //{
+        //    Quaternion delta = Quaternion.Euler(0f, rotateInput * rotationSpeed * Time.fixedDeltaTime, 0f);
+        //    rb.MoveRotation(rb.rotation * delta);
+        //}
+
+
+        MovementServerRpc(moveDir, rotateInput, jumpPressed);
+
+        jumpPressed = false;
     }
     void OnCollisionEnter(Collision collision)
     {
+        if (!IsServer) return;
         // When it collides with the ground, sets the variable isGrounded to true
         if (collision.gameObject.name == "Ground")
         {
@@ -84,6 +143,7 @@ public class Player : MonoBehaviour
     }
     void OnCollisionExit(Collision collision)
     {
+        if (!IsServer) return;
         // When it stops colliding with the ground, sets the variable isGrounded to false
         if (collision.gameObject.name == "Ground")
         {
