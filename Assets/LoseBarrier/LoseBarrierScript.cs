@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class LoseBarrierScript : NetworkBehaviour
 {
-    //if (!IsServer) return;
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Player"))
