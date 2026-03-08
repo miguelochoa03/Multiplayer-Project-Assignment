@@ -1,6 +1,4 @@
 using Unity.Netcode;
-using Unity.VisualScripting;
-using UnityEditor.Overlays;
 using UnityEngine;
 
 public class LoseBarrierScript : NetworkBehaviour
